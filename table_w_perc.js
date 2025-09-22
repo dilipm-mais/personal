@@ -3,7 +3,7 @@ looker.plugins.visualizations.add({
   label: "Custom Table with Percentage Change",
   options: {},
 
-  create: function (element, config) {
+   create: function (element, config) {
     // Prepare the container
     element.innerHTML = `
       <div id="hc-table-container" style="width:100%; overflow:auto;"></div>
@@ -20,26 +20,39 @@ looker.plugins.visualizations.add({
       return;
     }
 
-    // Extract dimension and measures
-    const dimensionName = queryResponse.fields.dimensions[0].name;
-    const measureNames = queryResponse.fields.measures.map(m => m.name);
-    const tableCalcNames = queryResponse.fields.table_calculations.map(tc => tc.name);
-    const allFields = [...measureNames, ...tableCalcNames];
+    // ---- 1️⃣ Extract dimension and measures (with labels + formats) ----
+    const dimensionField = queryResponse.fields.dimensions[0];
+    const measureFields = queryResponse.fields.measures;
+    const tableCalcFields = queryResponse.fields.table_calculations;
+    const allFields = [...measureFields, ...tableCalcFields];
 
-    // Build table data
+    // ---- 2️⃣ Build table rows with Looker formatting ----
     const tableRows = data.map(row => {
-      const dimVal = row[dimensionName].rendered || row[dimensionName].value;
-      const measures = allFields.map(f => row[f].value);
+      const dimVal = row[dimensionField.name].rendered || row[dimensionField.name].value;
+      const measures = allFields.map(f => {
+        const cell = row[f.name];
+        if (cell.rendered !== undefined && cell.rendered !== null) {
+          return cell.rendered; // use Looker-rendered value when possible
+        }
+        if (typeof cell.value === "number" && f.value_format) {
+          try {
+            return LookerCharts.Utils.numberFormat(cell.value, f.value_format);
+          } catch (e) {
+            return cell.value;
+          }
+        }
+        return cell.value;
+      });
       return [dimVal, ...measures];
     });
 
-    // Calculate percentage change row
-    const firstRow = tableRows[0];
-    const secondRow = tableRows[1];
+    // ---- 3️⃣ Calculate % change row (raw numbers first) ----
+    const firstRowRaw = data[0];
+    const secondRowRaw = data[1];
     const pctChangeRow = ["% Change"];
-    for (let i = 1; i < firstRow.length; i++) {
-      const v1 = firstRow[i];
-      const v2 = secondRow[i];
+    for (const f of allFields) {
+      const v1 = firstRowRaw[f.name].value;
+      const v2 = secondRowRaw[f.name].value;
       let pct = null;
       if (typeof v1 === "number" && typeof v2 === "number" && v1 !== 0) {
         pct = ((v2 - v1) / Math.abs(v1)) * 100;
@@ -47,12 +60,12 @@ looker.plugins.visualizations.add({
       pctChangeRow.push(pct !== null ? pct : null);
     }
 
-    // Prepare Highcharts data table format
-    const categories = ["", ...allFields];
+    // ---- 4️⃣ Build HTML Table ----
+    const headers = [dimensionField.label_short, ...allFields.map(f => f.label_short)];
     const htmlTable = `
       <table class="hc-table" style="border-collapse:collapse; width:100%; text-align:center;">
         <thead>
-          <tr>${categories.map(c => `<th style="border:1px solid #ccc; padding:4px;">${c}</th>`).join("")}</tr>
+          <tr>${headers.map(h => `<th style="border:1px solid #ccc; padding:4px;">${h}</th>`).join("")}</tr>
         </thead>
         <tbody>
           ${tableRows.map(r => `
@@ -75,4 +88,3 @@ looker.plugins.visualizations.add({
     done();
   }
 });
-
