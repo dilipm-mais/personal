@@ -1,6 +1,6 @@
 looker.plugins.visualizations.add({
   id: "custom-table-pct-change",
-  label: "Custom Table with % Change",
+  label: "Custom Table with Percentage Change",
   options: {},
 
   create: function (element, config) {
@@ -75,3 +75,4 @@ looker.plugins.visualizations.add({
     done();
   }
 });
+
