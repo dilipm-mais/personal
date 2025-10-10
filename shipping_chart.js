@@ -1,6 +1,6 @@
 looker.plugins.visualizations.add({
-  id: "shipping_chart",
-  label: "Horizontal Flow with Arrows (Ordered → Scanned)",
+  id: "shipping_chart_github",
+  label: "Shipping Chart Git",
   options: {},
 
   create: function(element, config){
@@ -186,3 +186,4 @@ looker.plugins.visualizations.add({
     element.setAttribute('aria-label', 'Four stage flow: Ordered to Scanned with three transition times shown');
   }
 });
+
