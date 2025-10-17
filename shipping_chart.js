@@ -40,7 +40,7 @@ looker.plugins.visualizations.add({
 
     // Fixed stage labels (left to right)
     const stageLabels = [
-      'Ordered',
+      'Order Placed',
       'Accepted by Vendor',
       'Marked as Shipped',
       'Scanned by Carrier'
@@ -48,9 +48,9 @@ looker.plugins.visualizations.add({
 
     // Bottom labels under arrows
     const arrowBottomLabels = [
-      'Time to Accept',
-      'Time to Mark as Shipped',
-      'Time to Scan'
+      'Time to Accept (hrs)',
+      'Time to Mark as Shipped (hrs)',
+      'Time to Scan (hrs)'
     ];
 
     // Clear previous content
@@ -155,7 +155,7 @@ looker.plugins.visualizations.add({
         svg.setAttribute('preserveAspectRatio','xMidYMid meet');
 
         const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-        line.setAttribute('x1','4');
+        line.setAttribute('x1','0');
         line.setAttribute('y1','24');
         line.setAttribute('x2','116');
         line.setAttribute('y2','24');
@@ -165,7 +165,7 @@ looker.plugins.visualizations.add({
         svg.appendChild(line);
 
         const polygon = document.createElementNS('http://www.w3.org/2000/svg','polygon');
-        polygon.setAttribute('points','116,14 136,24 116,34');
+        polygon.setAttribute('points','116,14 140,24 116,34');
         polygon.setAttribute('fill','#b7c2d6');
         svg.appendChild(polygon);
 
@@ -186,4 +186,5 @@ looker.plugins.visualizations.add({
     element.setAttribute('aria-label', 'Four stage flow: Ordered to Scanned with three transition times shown');
   }
 });
+
 
