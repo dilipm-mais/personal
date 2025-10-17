@@ -48,9 +48,9 @@ looker.plugins.visualizations.add({
 
     // Bottom labels under arrows
     const arrowBottomLabels = [
-      'Time to Accept (hrs)',
-      'Time to Mark as Shipped (hrs)',
-      'Time to Scan (hrs)'
+      'Average of Time to Accept (hrs)',
+      'Average of Time to Mark as Shipped (hrs)',
+      'Average of Time to Scan (hrs)'
     ];
 
     // Clear previous content
@@ -186,6 +186,7 @@ looker.plugins.visualizations.add({
     element.setAttribute('aria-label', 'Four stage flow: Ordered to Scanned with three transition times shown');
   }
 });
+
 
 
 
