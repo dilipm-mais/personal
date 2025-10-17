@@ -8,13 +8,13 @@ looker.plugins.visualizations.add({
     element.style.fontFamily = 'Inter, Roboto, Helvetica, Arial, sans-serif';
     element.innerHTML = `
       <style>
-        .flow-root{display:flex;align-items:center;justify-content:space-between;width:100%;height:140px;box-sizing:border-box;padding:10px}
+        .flow-root{display:flex;align-items:center;justify-content:space-between;width:100%;height:140px;box-sizing:border-box;padding:5px}
         .stage{flex:1;display:flex;flex-direction:column;align-items:center}
         .rect{min-width:160px;max-width:220px;padding:14px 16px;border-radius:8px;background:#f5f7fa;border:1px solid #d6dbe6;box-shadow:0 2px 6px rgba(10,10,10,0.04);text-align:center;font-weight:600}
         .arrow-wrap{width:140px;display:flex;flex-direction:column;align-items:center}
         .arrow-svg{width:100%;height:48px}
-        .arrow-label-top{font-size:13px;font-weight:700;margin-bottom:4px}
-        .arrow-label-bottom{font-size:12px;margin-top:6px;color:#555}
+        .arrow-label-top{font-size:14px;font-weight:700;margin-bottom:3px}
+        .arrow-label-bottom{font-size:14px;margin-top:3px;color:#555}
         .horizontal{display:flex;align-items:center;justify-content:space-between;width:100%}
         @media (max-width:800px){
           .flow-root{flex-direction:column;height:auto}
@@ -186,5 +186,6 @@ looker.plugins.visualizations.add({
     element.setAttribute('aria-label', 'Four stage flow: Ordered to Scanned with three transition times shown');
   }
 });
+
 
 
